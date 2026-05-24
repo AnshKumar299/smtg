@@ -18,5 +18,7 @@ jobs:
           script: |
             cd /home/ubuntu/smtg
             git pull origin main
-            docker compose down
-            docker compose up -d --build
+            docker stop $(docker ps -q) || true
+            docker rm $(docker ps -aq) || true
+            docker build -t smtg .
+            docker run -d -p 80:8080 smtg
